@@ -7,33 +7,59 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import mongosqlprac.app.service.GamesService;
+import mongosqlprac.app.service.MongoGamesService;
 
 @Controller
 @RequestMapping
 public class MongoController {
     
     @Autowired
-    GamesService gamesSvc;
+    MongoGamesService mongoGamesSvc;
 
     @GetMapping("/mongoFind")
     public String readAllGames(Model m, @RequestParam int page, @RequestParam int limit){
         m.addAttribute("page", page);
         m.addAttribute("limit", limit);
         // sorted in ascending order by gid
-        m.addAttribute("games", gamesSvc.getAllGamesInPagesM(page, limit));
+        m.addAttribute("games", mongoGamesSvc.getAllGamesInPagesM(page, limit));
 
         return "page";
     }
 
-    /* e.g. http://localhost:8080/?name=Tal%20der%20K%C3%B6nige */
-    @GetMapping("/")
-    public String readAllGames(Model m, @RequestParam String name){
+    /* e.g. http://localhost:8080/name?name=Tal%20der%20K%C3%B6nige */
+    @GetMapping("/name")
+    public String readGamesWithName(Model m, @RequestParam String name){
         m.addAttribute("name", name);
         // sorted in ascending order by gid
-        m.addAttribute("games", gamesSvc.findGamesByName(name));
+        m.addAttribute("games", mongoGamesSvc.findGamesByName(name));
 
         return "name";
     }
+
+    /* http://localhost:8080/id?gid=2 */
+    @GetMapping("/id")
+    public String readGamesWithId(Model m, @RequestParam int gid){
+        m.addAttribute("gid", gid);
+        // sorted in ascending order by gid
+        m.addAttribute("games", mongoGamesSvc.findGamesByGid(gid));
+
+        return "name";
+    }
+
+    // http://localhost:8080/update/?ranking=20&year=1998
+    @GetMapping("/update/")
+    public String updateGamesWithRankingAndYear(Model m, @RequestParam int ranking, 
+                            @RequestParam int year){
+        m.addAttribute("ranking", ranking);
+        m.addAttribute("year", year);
+
+        m.addAttribute("games", mongoGamesSvc.updateGameByRankingAndInt(ranking, year));
+
+        return "update_yr_rank";
+    }
+
+    
+    
+
 
 }

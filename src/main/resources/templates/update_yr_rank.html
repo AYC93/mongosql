@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <body>
+        <table border="1">
+            <tr>
+                <th>gid</th>
+                <th>name</th>
+                <th>year</th>
+                <th>ranking</th>
+                <th>users_rated</th>
+                <th>url</th>
+                <th>image</th>
+            </tr>
+            <tr th:object="${games}">
+                <td th:text="*{gid}"></td>
+                <td th:text="*{name}"></td>
+                <td th:text="*{year}"></td>
+                <td th:text="*{ranking}"></td>
+                <td th:text="*{users_rated}"></td>
+                <td th:text="*{url}"></td>
+                <td th:text="*{image}"></td>
+            </tr>
+        </table>
+    </body>
+    
+</body>
+</html>
