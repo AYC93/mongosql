@@ -17,4 +17,8 @@ public class GamesService {
     public List<Games> getAllGamesInPagesM(int page, int limit){
         return gamesRepository.getAllGamesInPagesM(page, limit);
     }
+
+    public List<Games> findGamesByName(String name) {
+        return gamesRepository.findGamesByName(name);
+    }
 }

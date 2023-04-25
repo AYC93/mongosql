@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<!-- code for pagination -->
+<body>
+    <table border="1">
+        <tr>
+            <th>gid</th>
+            <th>name</th>
+            <th>year</th>
+            <th>ranking</th>
+            <th>users_rated</th>
+            <th>url</th>
+            <th>image</th>
+        </tr>
+        <tr th:each="g : ${games}">
+			<td th:text="${g.gid}"></td>
+			<td th:text="${g.name}"></td>
+			<td th:text="${g.year}"></td>
+			<td th:text="${g.ranking}"></td>
+			<td th:text="${g.users_rated}"></td>
+			<td th:text="${g.url}"></td>
+			<td th:text="${g.image}"></td>
+		</tr>
+    </table>
+</body>
+
+</html>

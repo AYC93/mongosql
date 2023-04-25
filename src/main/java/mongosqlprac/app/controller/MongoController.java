@@ -26,4 +26,14 @@ public class MongoController {
         return "page";
     }
 
+    /* e.g. http://localhost:8080/?name=Tal%20der%20K%C3%B6nige */
+    @GetMapping("/")
+    public String readAllGames(Model m, @RequestParam String name){
+        m.addAttribute("name", name);
+        // sorted in ascending order by gid
+        m.addAttribute("games", gamesSvc.findGamesByName(name));
+
+        return "name";
+    }
+
 }
