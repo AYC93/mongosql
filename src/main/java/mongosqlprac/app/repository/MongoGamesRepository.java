@@ -111,9 +111,7 @@ public class MongoGamesRepository {
         query.addCriteria(Criteria.where("_id").is(new ObjectId(objId)));
 
         Reviews r = Reviews.createFromDocument(mongoTemplate.findOne(query, Document.class , "reviews"));
-        /* 
-                // r here is returning null object 
-        */
+    
         System.out.println(">>>>" + r);
 
         // if (r.getEdited().isEmpty()){
