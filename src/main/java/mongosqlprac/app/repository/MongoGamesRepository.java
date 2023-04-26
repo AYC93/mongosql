@@ -1,5 +1,6 @@
 package mongosqlprac.app.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.Document;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mongodb.client.result.UpdateResult;
 
-import jakarta.json.JsonObject;
+import mongosqlprac.app.model.Edited;
 import mongosqlprac.app.model.Games;
 import mongosqlprac.app.model.Reviews;
 
@@ -62,8 +63,8 @@ public class MongoGamesRepository {
         query.addCriteria(cri);
 
         List<Games> result = mongoTemplate.find(query, Document.class, "games")
-        .stream()
-        .map(d -> Games.createFromDocument(d)).toList();
+                            .stream()
+                            .map(d -> Games.createFromDocument(d)).toList();
 
         return result;
     }
@@ -96,22 +97,40 @@ public class MongoGamesRepository {
         return result;
     }
 
-    public String createDocument(Reviews reviews){
+    // create new review
+    public String createNewReviews(Reviews reviews){
         Document result = mongoTemplate.insert(reviews.toDocument(), "reviews");
         return result.getObjectId("_id").toString();
     }
 
-    // public Reviews updateGamesWithReviews(String user, int rating, String comment, int id, LocalDate date, String name){
-    //     Query query = new Query();
+    public String updateReviews(String objId, Edited e){
+        Query query = Query.query(Criteria.where("_id").is(objId));
 
-    //     Criteria cri = Criteria.where
+        Reviews r = Reviews.createFromDocument(mongoTemplate.findOne(query, Document.class , "reviews"));
+        /* 
+                // r here is returning null object 
+        */
+        r.getEdited().add(e);
+        System.out.println(">>>>" + r);
 
-    //     mongoTemplate.insert()
+        // if (r.getEdited().isEmpty()){
+        //     r.setEdited(new ArrayList<>());
+        // }
+        r.getEdited().add(e); // parse in list of edited
+        Document result = mongoTemplate.findAndReplace(query, r.toDocument(), "reviews");
+        
+        return result.getObjectId("_id").toString();
+    }
 
+    public boolean checkIfReviewExist(String objId){
+        Query query = Query.query(Criteria.where("_id").is(objId));
 
-    //     return "";
-    // }
-    
+        Reviews r = mongoTemplate.findOne(query, Reviews.class, "reviews");
 
+        if(r==null){
+            return false;
+        }
+        return true;
+    }
 
 }

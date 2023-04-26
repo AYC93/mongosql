@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import mongosqlprac.app.model.Edited;
 import mongosqlprac.app.model.Games;
 import mongosqlprac.app.model.Reviews;
 import mongosqlprac.app.repository.MongoGamesRepository;
@@ -31,7 +32,16 @@ public class MongoGamesService {
         return mongoGamesRepository.updateGameByRankingAndInt(ranking, year);
     }
 
-    public String createDocument(Reviews reviews){
-        return mongoGamesRepository.createDocument(reviews);
+    // create new review
+    public String createNewReviews(Reviews reviews){
+        return mongoGamesRepository.createNewReviews(reviews);
+    }
+    
+    public String updateReviews(String objId, Edited e){
+        return mongoGamesRepository.updateReviews(objId, e);
+    }
+
+    public boolean checkIfReviewExist(String objId){
+        return mongoGamesRepository.checkIfReviewExist(objId);
     }
 }
