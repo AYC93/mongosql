@@ -14,7 +14,9 @@ import org.springframework.stereotype.Repository;
 
 import com.mongodb.client.result.UpdateResult;
 
+import jakarta.json.JsonObject;
 import mongosqlprac.app.model.Games;
+import mongosqlprac.app.model.Reviews;
 
 @Repository
 public class MongoGamesRepository {
@@ -93,6 +95,23 @@ public class MongoGamesRepository {
 
         return result;
     }
+
+    public String createDocument(Reviews reviews){
+        Document result = mongoTemplate.insert(reviews.toDocument(), "reviews");
+        return result.getObjectId("_id").toString();
+    }
+
+    // public Reviews updateGamesWithReviews(String user, int rating, String comment, int id, LocalDate date, String name){
+    //     Query query = new Query();
+
+    //     Criteria cri = Criteria.where
+
+    //     mongoTemplate.insert()
+
+
+    //     return "";
+    // }
+    
 
 
 }

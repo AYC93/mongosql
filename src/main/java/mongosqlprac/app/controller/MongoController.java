@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import mongosqlprac.app.model.Games;
 import mongosqlprac.app.service.MongoGamesService;
 
 @Controller
@@ -15,6 +17,9 @@ public class MongoController {
     
     @Autowired
     MongoGamesService mongoGamesSvc;
+
+    @Autowired
+    MongoGamesService mongoGamesService;
 
     @GetMapping("/mongoFind")
     public String readAllGames(Model m, @RequestParam int page, @RequestParam int limit){
@@ -38,7 +43,7 @@ public class MongoController {
 
     /* http://localhost:8080/id?gid=2 */
     @GetMapping("/id")
-    public String readGamesWithId(Model m, @RequestParam int gid){
+    public String readGamesWithId(Model m, @RequestParam int gid, @ModelAttribute Games g){
         m.addAttribute("gid", gid);
         // sorted in ascending order by gid
         m.addAttribute("games", mongoGamesSvc.findGamesByGid(gid));
@@ -57,9 +62,6 @@ public class MongoController {
 
         return "update_yr_rank";
     }
-
-    
-    
 
 
 }

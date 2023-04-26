@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mongosqlprac.app.model.Games;
+import mongosqlprac.app.model.Reviews;
 import mongosqlprac.app.repository.MongoGamesRepository;
 
 @Service
@@ -28,5 +29,9 @@ public class MongoGamesService {
 
     public Games updateGameByRankingAndInt(int ranking, int year){
         return mongoGamesRepository.updateGameByRankingAndInt(ranking, year);
+    }
+
+    public String createDocument(Reviews reviews){
+        return mongoGamesRepository.createDocument(reviews);
     }
 }
