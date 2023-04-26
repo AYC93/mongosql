@@ -1,6 +1,7 @@
 package mongosqlprac.app.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 /* 
     Using the form field, the following document will be inserted into the reviews collection
     {
@@ -29,7 +30,7 @@ public class Reviews {
     private int id;
     private LocalDate date;
     private String name;
-    private List<Edited> edited;
+    private List<Edited> editedList;
 
     public String getUser() {
         return user;
@@ -79,31 +80,31 @@ public class Reviews {
         this.name = name;
     }
 
-    public List<Edited> getEdited() {
-        return edited;
+    public List<Edited> getEditedList() {
+        return editedList;
     }
 
-    public void setEdited(List<Edited> edited) {
-        this.edited = edited;
+    public void setEditedList(List<Edited> editedList) {
+        this.editedList = editedList;
     }
 
     public Reviews() {
     }
 
-    public Reviews(String user, int rating, String comment, int id, LocalDate date, String name, List<Edited> edited) {
+    public Reviews(String user, int rating, String comment, int id, LocalDate date, String name, List<Edited> editedList) {
         this.user = user;
         this.rating = rating;
         this.comment = comment;
         this.id = id;
         this.date = date;
         this.name = name;
-        this.edited = edited;
+        this.editedList = editedList;
     }
 
     @Override
     public String toString() {
         return "Reviews [user=" + user + ", rating=" + rating + ", comment=" + comment + ", id=" + id + ", date=" + date
-                + ", name=" + name + ", edited=" + edited + "]";
+                + ", name=" + name + ", edited=" + editedList + "]";
     }
 
     // array builder for jsonobject, can build tgt with the rest, otherwise if
@@ -133,9 +134,9 @@ public class Reviews {
                 .add("posted", LocalDate.now().toString());
 
         // if values exists in edited comments array, build
-        if(!comment.isBlank()){
+        if(editedList.size()==0){
             JsonArrayBuilder ab = Json.createArrayBuilder();
-            for (Edited e : getEdited())
+            for (Edited e : getEditedList())
                 // toJson object to add inside array builder
                 ab.add(e.toJson());
             // add into overall obj builder
@@ -146,13 +147,23 @@ public class Reviews {
 
     public static Reviews createFromDocument(Document d){ // reading from Document
         Reviews r = new Reviews();
+        Edited e = new Edited();
         r.setUser(d.getString("user"));
         r.setRating(d.getInteger("rating"));
         r.setComment(d.getString("comment"));
         r.setId(d.getInteger("id"));
         r.setName(d.getString("name"));
         r.setDate(LocalDate.parse(d.getString("posted")));
-
+        
+        // to parse obj into list
+        List<Edited> editedList = new ArrayList<>();
+        List<Document> editedDocs = d.getList("edited", Document.class);
+        if (editedDocs != null) {
+            for (Document editedDoc : editedDocs) {
+                editedList.add(e.parseExistingDocument(editedDoc));
+            }
+        }
+        r.setEditedList(editedList);
         return r;
     }
 

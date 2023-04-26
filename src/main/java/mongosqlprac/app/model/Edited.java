@@ -53,6 +53,10 @@ public class Edited {
                     .build();
     }
 
+    public Document toDocument(){
+        return Document.parse(toJson().toString());
+    }
+
     public Edited parseExistingDocument(Document d){
         return new Edited(
             d.getString("comment"),

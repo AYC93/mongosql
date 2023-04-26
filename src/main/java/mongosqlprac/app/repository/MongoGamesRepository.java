@@ -1,9 +1,10 @@
 package mongosqlprac.app.repository;
 
-import java.util.ArrayList;
+// import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -69,6 +70,7 @@ public class MongoGamesRepository {
         return result;
     }
 
+    // update game by rankng and year
     public Games updateGameByRankingAndInt(int ranking, int year){
         Query query = new Query();
 
@@ -103,21 +105,22 @@ public class MongoGamesRepository {
         return result.getObjectId("_id").toString();
     }
 
+    // revist later
     public String updateReviews(String objId, Edited e){
-        Query query = Query.query(Criteria.where("_id").is(objId));
+        Query query = new Query();
+        query.addCriteria(Criteria.where("_id").is(new ObjectId(objId)));
 
         Reviews r = Reviews.createFromDocument(mongoTemplate.findOne(query, Document.class , "reviews"));
         /* 
                 // r here is returning null object 
         */
-        r.getEdited().add(e);
         System.out.println(">>>>" + r);
 
         // if (r.getEdited().isEmpty()){
         //     r.setEdited(new ArrayList<>());
         // }
-        r.getEdited().add(e); // parse in list of edited
-        Document result = mongoTemplate.findAndReplace(query, r.toDocument(), "reviews");
+        r.getEditedList().add(e); // parse in list of edited
+        Document result = mongoTemplate.findAndReplace(query, r.toDocument() ,"reviews");
         
         return result.getObjectId("_id").toString();
     }
