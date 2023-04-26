@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,8 +37,9 @@ public class MongoRestController {
                             .body(reviews.toJsonWEdited().toString());
     }
 
+    // works, able to update and add new
     @PutMapping(path="/review/{reviewId}")
-    public ResponseEntity<String> updateExistingReview(@PathVariable String reviewId, Edited e){
+    public ResponseEntity<String> updateExistingReview(@PathVariable String reviewId, @RequestBody Edited e){
     // if(mongoGSvc.checkIfReviewExist(reviewId) == true)
     //     return ResponseEntity.status(HttpStatus.NOT_FOUND)
     //                         .body("Obj Id not valid, please try another");

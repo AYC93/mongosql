@@ -114,10 +114,9 @@ public class MongoGamesRepository {
     
         System.out.println(">>>>" + r);
 
-        // if (r.getEdited().isEmpty()){
-        //     r.setEdited(new ArrayList<>());
-        // }
-        r.getEditedList().add(e); // parse in list of edited
+        r.getEditedList().add(e); // parse in list of edited, but not reading data from submitted
+
+        System.out.println("Add get edited list>>>>" + r);
         Document result = mongoTemplate.findAndReplace(query, r.toDocument() ,"reviews");
         
         return result.getObjectId("_id").toString();

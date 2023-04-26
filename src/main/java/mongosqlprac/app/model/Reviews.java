@@ -134,7 +134,7 @@ public class Reviews {
                 .add("posted", LocalDate.now().toString());
 
         // if values exists in edited comments array, build
-        if(editedList.size()==0){
+        if(editedList.size()!=0){
             JsonArrayBuilder ab = Json.createArrayBuilder();
             for (Edited e : getEditedList())
                 // toJson object to add inside array builder
